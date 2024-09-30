@@ -38,7 +38,6 @@ const Book = sequelize.define(
     date_publication: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: "0000-00-00",
     },
     amount: {
       type: DataTypes.INTEGER,
@@ -52,7 +51,6 @@ const Book = sequelize.define(
     id_literary_genre: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 1,
       references: {
         model: "literary_genres",
         key: "id_literary_genre",
@@ -156,6 +154,8 @@ const Writings = sequelize.define(
     timestamps: false,
   }
 );
+
+sequelize.sync();
 
 module.exports = {
   Book,
