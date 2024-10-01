@@ -142,28 +142,29 @@ const Writings = sequelize.define(
       autoIncrement: true,
       allowNull: false,
     },
-    id_author: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "authors",
-        key: "id_author",
-      },
-    },
-    id_book: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "books",
-        key: "id_book",
-      },
-    },
   },
   {
     tableName: "writings",
     timestamps: false,
   }
 );
+
+// Relación muchos a muchos entre Books y Authors
+Book.belongsToMany(Author, {
+  through: Writings,  // Nombre de la tabla intermedia (debe usar el modelo `Writings`)
+  foreignKey: "id_book",   
+  as: "Author",      // Alias en plural para acceder a los autores de un libro
+});
+
+Author.belongsToMany(Book, {
+  through: Writings,  // Nombre de la tabla intermedia
+  foreignKey: "id_author", 
+  as: "Book",        // Alias en plural para acceder a los libros de un autor
+});
+
+
+
+
 
 sequelize.sync();
 

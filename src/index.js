@@ -7,6 +7,7 @@ const app = express();
 // Import routes
 const booksRouter = require("./routes/booksRouter.js");
 const authorsRouter = require("./routes/authorsRouter.js");
+const writingsRouter = require("./routes/writingsRouter.js");
 
 // Cors configuration
 app.use(cors());
@@ -16,7 +17,8 @@ app.use(bodyParser.json());
 
 // Use routes
 app.use("/books", booksRouter);
-app.use("/authors", authorsRouter)
+app.use("/authors", authorsRouter);
+app.use("/writings", writingsRouter);
 
 app.listen(3000, () => {
   console.log("Express server running in http://localhost:3000");
