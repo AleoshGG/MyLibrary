@@ -128,6 +128,11 @@ const Author = sequelize.define(
   }
 );
 
+Author.belongsTo(Nationality, {
+  foreignKey: "nationality",
+  as: "Nationality",
+});
+
 const Writings = sequelize.define(
   "writings",
   {
