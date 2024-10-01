@@ -63,6 +63,11 @@ const Book = sequelize.define(
   }
 );
 
+Book.belongsTo(Literary_genre, {
+  foreignKey: "id_literary_genre",
+  as: "Literary_genre",
+});
+
 const Nationality = sequelize.define(
   "Nationality",
   {
