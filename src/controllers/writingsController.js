@@ -6,7 +6,7 @@ exports.addWriting = async (req, res) => {
 
     await Writings.create({ id_author, id_book });
 
-    res.status(201).send("Resourse created successfully");
+    res.status(201).send({ msg: "Resourse created successfully" });
   } catch (err) {
     return res.status(500).send(`Error has ocurred: ${err}`);
   }

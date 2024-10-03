@@ -4,9 +4,9 @@ exports.addAuthor = async (req, res) => {
   try {
     const { first_name, last_name, birthdate, nationality, place_birth } = req.body;
 
-    await Author.create({ first_name, last_name, birthdate, nationality, place_birth });
+    const newAuthor = await Author.create({ first_name, last_name, birthdate, nationality, place_birth });
 
-    res.status(201).send("Resourse created successfully");
+    res.status(201).send({ msg: "Resourse created successfully", id_author: newAuthor.id_author });
   } catch (err) {
     return res.status(500).send(`Error has ocurred: ${err}`);
   }
@@ -32,7 +32,7 @@ exports.updateAuthor = async (req, res) => {
       { where: { id_author: id_author } }
     );
 
-    res.status(200).send("Resourse updated successfully");
+    res.status(200).send({ msg: "Resourse created successfully" });
   } catch (err) {
     return res.status(500).send(`Error has ocurred: ${err}`);
   }
@@ -44,7 +44,7 @@ exports.deleteAuthor = async (req, res) => {
 
     await Author.destroy({ where: { id_author: id_author } });
 
-    res.status(200).send("Resourse deleted successfully");
+    res.status(200).send({ msg: "Resourse created successfully" });
   } catch (err) {
     return res.status(500).send(`Error has ocurred: ${err}`);
   }

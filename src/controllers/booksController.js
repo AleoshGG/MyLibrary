@@ -2,9 +2,10 @@ const { Book, Literary_genre } = require("../models/models.js");
 
 exports.addBook = async (req, res) => {
   try {
-    const { title, date_publication, amount, editorial, id_literary_genre } = req.body;
+    const { title, date_publication, amount, editorial, id_literary_genre } =
+      req.body;
 
-    await Book.create({
+    const newBook = await Book.create({
       title,
       date_publication,
       amount,
@@ -12,7 +13,9 @@ exports.addBook = async (req, res) => {
       id_literary_genre,
     });
 
-    res.status(201).send("Resourse created successfully");
+    res
+      .status(201)
+      .send({ msg: "Resourse created successfully", id_book: newBook.id_book });
   } catch (err) {
     return res.status(500).send(`Error has ocurred: ${err}`);
   }
@@ -20,7 +23,9 @@ exports.addBook = async (req, res) => {
 
 exports.getBook = async (req, res) => {
   try {
-    const books = await Book.findAll({ include: { model: Literary_genre, as: "Literary_genre"} });
+    const books = await Book.findAll({
+      include: { model: Literary_genre, as: "Literary_genre" },
+    });
 
     res.status(200).json(books);
   } catch (err) {
@@ -28,9 +33,24 @@ exports.getBook = async (req, res) => {
   }
 };
 
+exports.searchBook = async (req, res) => {
+  try {
+    const id_book = req.params.id;
+    const book = await Book.findAll({
+      where: { id_book: id_book },
+      include: { model: Literary_genre, as: "Literary_genre" },
+    });
+
+    res.status(200).json(book);
+  } catch (err) {
+    return res.status(500).send(`Error has ocurred: ${err}`);
+  }
+};
+
 exports.updateBook = async (req, res) => {
   try {
-    const { title, date_publication, amount, editorial, id_literary_genre } = req.body;
+    const { title, date_publication, amount, editorial, id_literary_genre } =
+      req.body;
     const id_book = req.params.id;
 
     await Book.update(
@@ -38,7 +58,7 @@ exports.updateBook = async (req, res) => {
       { where: { id_book: id_book } }
     );
 
-    res.status(200).send("Resourse updated successfully");
+    res.status(200).send({ msg: "Resourse created successfully" });
   } catch (err) {
     return res.status(500).send(`Error has ocurred: ${err}`);
   }
@@ -50,7 +70,7 @@ exports.deleteBook = async (req, res) => {
 
     await Book.destroy({ where: { id_book: id_book } });
 
-    res.status(200).send("Resourse deleted successfully");
+    res.status(200).send({ msg: "Resourse created successfully" });
   } catch (err) {
     return res.status(500).send(`Error has ocurred: ${err}`);
   }
