@@ -40,7 +40,7 @@ exports.getReaders = async (req, res) => {
 
 exports.deleteReader = async (req, res) => {
   try {
-    const id_reader = req.params.id_reader;
+    const id_reader = req.params.id;
 
     await Reader.destroy({
       where: { id_reader: id_reader },
