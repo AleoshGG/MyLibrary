@@ -47,6 +47,27 @@ exports.searchBook = async (req, res) => {
   }
 };
 
+exports.searchBookByTitle = async (req, res) => {
+  try {
+    const title = req.params.title;
+    const book = await Book.findAll({
+      where: {
+        title: {
+          [Op.like]: `%${title}%` // Coincidencias parciales
+        }
+      },
+      order: [
+        [sequelize.fn('LENGTH', sequelize.col('title')), 'ASC'] // Ordena por la longitud del título
+      ],
+      limit: 1 // Obtiene solo el libro más similar
+    });
+
+    res.status(200).json(book);
+  } catch (err) {
+    return res.status(500).send(`Error has ocurred: ${err}`);
+  }
+};
+
 exports.updateBook = async (req, res) => {
   try {
     const { title, date_publication, amount, editorial, id_literary_genre } =

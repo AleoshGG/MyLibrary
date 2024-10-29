@@ -10,6 +10,7 @@ const authorsRouter = require("./routes/authorsRouter.js");
 const writingsRouter = require("./routes/writingsRouter.js");
 const literary_genresRouter = require("./routes/literary_genresRouter.js");
 const nationalitiesRouter = require("./routes/nationalitiesRouter.js");
+const readersRouter = require("./routes/readersRouter.js");
 
 // Cors configuration
 app.use(cors());
@@ -23,6 +24,7 @@ app.use("/authors", authorsRouter);
 app.use("/writings", writingsRouter);
 app.use("/genres", literary_genresRouter);
 app.use("/nationalities", nationalitiesRouter);
+app.use("/readers", readersRouter);
 
 app.listen(3000, () => {
   console.log("Express server running in http://localhost:3000");

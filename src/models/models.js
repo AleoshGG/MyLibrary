@@ -149,22 +149,86 @@ const Writings = sequelize.define(
   }
 );
 
+const Reader = sequelize.define(
+  "readers",
+  {
+    id_reader: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    first_name: {
+      type: DataTypes.STRING(45),
+      allowNull: false,
+    },
+    last_name: {
+      type: DataTypes.STRING(45),
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING(45),
+      allowNull: false,
+    },
+    phone_number: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+    },
+    account_status: {
+      type: DataTypes.ENUM("active", "suspended"),
+      allowNull: false,
+    },
+  },
+  {
+    tableName: "readers",
+    timestamps: false,
+  }
+);
+
+const Loan = sequelize.define("loan", {
+  id_loan: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  id_reader: {
+    type: DataTypes.INTEGER,
+    foreignKey: true,
+    references: {
+      model: "readers",
+      key: "id_reader",
+    },
+    allowNull: false,
+  },
+  id_book: {
+    type: DataTypes.INTEGER,
+    foreignKey: true,
+    references: {
+      model: "books",
+      key: "id_book",
+    },
+  },
+  loan_date: {
+    type: DataTypes.STRING(45),
+    allowNull: false,
+  },
+  delivery_date: {
+    type: DataTypes.STRING(45),
+    allowNull: false,
+  },
+});
+
 // Relación muchos a muchos entre Books y Authors
 Book.belongsToMany(Author, {
-  through: Writings,  // Nombre de la tabla intermedia (debe usar el modelo `Writings`)
-  foreignKey: "id_book",   
-  as: "Author",      // Alias en plural para acceder a los autores de un libro
+  through: Writings, // Nombre de la tabla intermedia (debe usar el modelo `Writings`)
+  foreignKey: "id_book",
+  as: "Author", // Alias en plural para acceder a los autores de un libro
 });
 
 Author.belongsToMany(Book, {
-  through: Writings,  // Nombre de la tabla intermedia
-  foreignKey: "id_author", 
-  as: "Book",        // Alias en plural para acceder a los libros de un autor
+  through: Writings, // Nombre de la tabla intermedia
+  foreignKey: "id_author",
+  as: "Book", // Alias en plural para acceder a los libros de un autor
 });
-
-
-
-
 
 sequelize.sync();
 
@@ -174,4 +238,6 @@ module.exports = {
   Literary_genre,
   Nationality,
   Writings,
+  Reader,
+  Loan,
 };
