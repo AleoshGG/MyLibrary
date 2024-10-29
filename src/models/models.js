@@ -215,6 +215,10 @@ const Loan = sequelize.define("loan", {
     type: DataTypes.STRING(45),
     allowNull: false,
   },
+  status: {
+    type: DataTypes.ENUM("delivered", "not_delivered"),
+    allowNull: false
+  }
 });
 
 // Relación muchos a muchos entre Books y Authors
