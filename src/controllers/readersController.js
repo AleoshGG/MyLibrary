@@ -1,4 +1,5 @@
 const { Reader } = require("../models/models.js");
+const { Op, fn, col, where } = require('sequelize');
 
 exports.addReader = async (req, res) => {
   try {
@@ -13,18 +14,26 @@ exports.addReader = async (req, res) => {
   }
 };
 
+
 exports.getReader = async (req, res) => {
   try {
-    const first_name = req.params.first_name;
-    const last_name = req.params.last_name;
+    const searchTerm = req.params.name;
 
-    const reader = await Reader.findAll({
-      where: { first_name: first_name, last_name: last_name },
+    const readers = await Reader.findAll({
+      where: where(
+        fn('concat', col('first_name'), ' ', col('last_name')),
+        { [Op.like]: `%${searchTerm}%` }
+      ),
     });
 
-    res.status(200).json(reader);
+    if (readers.length > 0) {
+      res.status(200).json(readers[0]);
+    } else {
+      res.status(404).json({ message: 'No readers found matching the search term.' });
+    }
   } catch (err) {
-    return console.log(`Error has a occurred: ${err}`);
+    console.error(`Error has occurred: ${err}`);
+    res.status(500).json({ message: 'An error occurred while searching for readers.' });
   }
 };
 
