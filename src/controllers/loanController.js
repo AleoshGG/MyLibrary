@@ -1,5 +1,5 @@
-const { Loan } = require("../models/models.js");
-const { Op } = require('sequelize');
+const { Loan, Book, Reader } = require("../models/models.js");
+const { Op } = require("sequelize");
 
 exports.addLoan = async (req, res) => {
   try {
@@ -45,10 +45,20 @@ exports.getLoansExpired = async (req, res) => {
     const loans = await Loan.findAll({
       where: {
         delivery_date: { [Op.lt]: today }, // Menor que la fecha actual
-        status: "not_delivered"
-      }
+        status: "not_delivered",
+      },
+      include: [
+        {
+          model: Book,
+          attributes: ["title"], // Solo traemos el título del libro
+        },
+        {
+          model: Reader,
+          attributes: ["first_name", "last_name", "phone_number", "email"], // Solo traemos los datos necesarios del lector
+        },
+      ],
     });
-    
+
     res.status(200).json(loans);
   } catch (err) {
     return console.log(`Error has a occurred: ${err}`);

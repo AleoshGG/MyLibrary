@@ -217,8 +217,8 @@ const Loan = sequelize.define("loan", {
   },
   status: {
     type: DataTypes.ENUM("delivered", "not_delivered"),
-    allowNull: false
-  }
+    allowNull: false,
+  },
 });
 
 // Relación muchos a muchos entre Books y Authors
@@ -233,6 +233,10 @@ Author.belongsToMany(Book, {
   foreignKey: "id_author",
   as: "Book", // Alias en plural para acceder a los libros de un autor
 });
+
+// En Loan.js
+Loan.belongsTo(Book, { foreignKey: "id_book" });
+Loan.belongsTo(Reader, { foreignKey: "id_reader", onDelete: "CASCADE" });
 
 sequelize.sync();
 

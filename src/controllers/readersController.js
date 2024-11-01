@@ -1,4 +1,4 @@
-const { Reader } = require("../models/models.js");
+const { Reader, Loan } = require("../models/models.js");
 const { Op, fn, col, where } = require('sequelize');
 
 exports.addReader = async (req, res) => {
@@ -50,6 +50,10 @@ exports.getReaders = async (req, res) => {
 exports.deleteReader = async (req, res) => {
   try {
     const id_reader = req.params.id;
+
+    await Loan.destroy({
+      where: { id_reader: id_reader }
+    });
 
     await Reader.destroy({
       where: { id_reader: id_reader },
