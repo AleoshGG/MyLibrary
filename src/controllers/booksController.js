@@ -1,4 +1,5 @@
-const { Book, Literary_genre } = require("../models/models.js");
+const { Book, Literary_genre, sequelize } = require("../models/models.js");
+const { Op, fn, col } = require('sequelize');
 
 exports.addBook = async (req, res) => {
   try {
@@ -57,14 +58,14 @@ exports.searchBookByTitle = async (req, res) => {
         }
       },
       order: [
-        [sequelize.fn('LENGTH', sequelize.col('title')), 'ASC'] // Ordena por la longitud del título
+        [fn('LENGTH', col('title')), 'ASC'] // Ordena por la longitud del título
       ],
       limit: 1 // Obtiene solo el libro más similar
     });
 
-    res.status(200).json(book);
+    res.status(200).json(book[0]);
   } catch (err) {
-    return res.status(500).send(`Error has ocurred: ${err}`);
+    return res.status(500).send(`Error has occurred: ${err}`);
   }
 };
 
